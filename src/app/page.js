@@ -21,6 +21,7 @@ export default function Home() {
     taxRate: 0,
     currency: '$',
     primaryColor: '#fdbcb4', // Default pink/coral
+    enablePattern: true, // Optional center pattern
     senderName: '',
     senderEmail: '',
     senderAddress: '',

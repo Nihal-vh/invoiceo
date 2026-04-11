@@ -5,8 +5,8 @@ import styles from './InvoiceForm.module.css';
 
 export default function InvoiceForm({ data, onChange }) {
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    onChange({ ...data, [name]: value });
+    const { name, value, type, checked } = e.target;
+    onChange({ ...data, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleItemChange = (index, field, value) => {
@@ -75,6 +75,20 @@ export default function InvoiceForm({ data, onChange }) {
               <option value="₹">₹ (INR)</option>
               <option value="¥">¥ (JPY)</option>
             </select>
+          </div>
+        </div>
+        <div className={styles.fieldRow}>
+          <div className={styles.field}>
+            <label className={styles.label}>
+              <input
+                type="checkbox"
+                name="enablePattern"
+                checked={data.enablePattern}
+                onChange={handleChange}
+                style={{ marginRight: '8px' }}
+              />
+              Enable Center Watermark Pattern
+            </label>
           </div>
         </div>
         <div className={styles.fieldRow}>

@@ -21,14 +21,16 @@ export default function InvoicePreview({ data }) {
       id="invoice-preview"
       style={{ '--primary-color': primaryColor }}
     >
-      {/* Background Watermark Pattern */}
-      <div className={styles.watermark}>
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3"/>
-          <path d="M 30 50 L 70 50 M 50 30 L 50 70" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
-          <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.2"/>
-        </svg>
-      </div>
+      {/* Background Watermark Pattern (Optional) */}
+      {data.enablePattern && (
+        <div className={styles.watermark}>
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3"/>
+            <path d="M 30 50 L 70 50 M 50 30 L 50 70" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
+            <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.2"/>
+          </svg>
+        </div>
+      )}
 
       {/* Background Waves - Premium Styling */}
       <div className={styles.topWave}>

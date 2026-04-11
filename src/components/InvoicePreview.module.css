@@ -1,0 +1,335 @@
+/* Base Container constraints for on-screen */
+.previewContainer {
+  background: white;
+  width: 100%;
+  max-width: 800px; /* A4 width */
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08); /* Premium shadow */
+  border-radius: 4px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #2b2b2b;
+  display: flex;
+  flex-direction: column;
+  /* Allow the container to grow with items */
+  min-height: 1100px; 
+}
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: 450px;
+  color: var(--primary-color);
+  z-index: 1; 
+  pointer-events: none;
+  opacity: 0.7; /* Svg itself dictates partial opacity layers */
+}
+.watermark svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Background Waves */
+.topWave, .bottomWave {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.topWave { top: 0; }
+.bottomWave { bottom: 0; }
+.topWave svg, .bottomWave svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Main Content Layer */
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 60px 60px 220px 60px; /* High bottom padding to clear the bottom wave */
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Allow content to fill space */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.logoArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoImage {
+  max-width: 160px;
+  max-height: 85px;
+  object-fit: contain;
+}
+
+.placeholderLogo {
+  width: 110px;
+  height: 90px;
+  background: linear-gradient(135deg, #2b2b2b, #000);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 22px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.invoiceNumber {
+  margin-top: 12px;
+  font-weight: 700;
+  color: #555;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.metaTopRight {
+  text-align: right;
+}
+
+.dateArea, .dueDateArea {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #444;
+}
+.dateArea strong, .dueDateArea strong {
+  margin-right: 6px;
+  color: #111;
+}
+
+/* Bi-directional Addresses Grid */
+.metaData {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.addressBlockRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.toBlock, .fromBlock {
+  font-size: 14px;
+  line-height: 1.6;
+  flex: 1;
+}
+.fromBlock {
+  text-align: right;
+  padding-left: 20px;
+}
+
+.highlightText {
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.subjectBlock {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #111;
+  border-left: 4px solid var(--primary-color, #fdbcb4);
+  padding-left: 12px;
+}
+
+.subheadingBlock {
+  font-size: 14px;
+  color: #555;
+  padding-left: 16px;
+}
+
+/* Data Table */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 40px;
+  text-align: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #eee;
+}
+
+.table th {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 14px 10px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.table td {
+  padding: 14px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.rowAlt {
+  background-color: #fafbfc;
+}
+
+.emptyTable {
+  text-align: center;
+  padding: 30px !important;
+  color: #aaa !important;
+  font-style: italic;
+}
+
+.colProduct { text-align: left; width: 45%; padding-left: 20px !important; font-weight: 500; color: #111; }
+.colPrice { width: 20%; }
+.colQty { width: 15%; }
+.colTotal { width: 20%; font-weight: 600; }
+
+/* Summary Widget Area */
+.summaryContainer {
+  align-self: flex-end;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+}
+
+.summaryBox {
+  min-width: 300px;
+  background: #fdfdfd;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  border: 1px solid #eaeaea;
+}
+
+.summaryRow {
+  display: flex;
+  padding: 8px 12px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #eee;
+}
+
+.summaryRow:last-child {
+  border-bottom: none;
+}
+
+.summaryDiscount {
+  color: #e53e3e;
+}
+
+.summaryLabel {
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.summaryValue {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.summaryTotal {
+  margin-top: 6px;
+  padding-top: 12px;
+  background: linear-gradient(90deg, #fafafa, #f4f6f8);
+  border-radius: 6px;
+}
+.summaryTotal .summaryLabel {
+  font-weight: 800;
+  color: #111;
+  font-size: 16px;
+}
+.summaryTotal .summaryValue {
+  font-weight: 800;
+  color: #111;
+  font-size: 18px;
+}
+
+/* Footer Grouping */
+.bottomSection {
+  margin-top: auto; 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+.termsBox {
+  flex: 1;
+  background: #f9fafa; /* Very light neutral background instead of solid color */
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #666; /* Softer text color */
+  border-left: 4px solid var(--primary-color, #fdbcb4); /* Brand color as subtle stripe */
+}
+.termsBox strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #333; /* Darker title but not pure black */
+  font-weight: 600;
+}
+
+.footer {
+  flex: 1;
+  text-align: right;
+  font-size: 12px;
+  color: #555;
+}
+
+.footerNote {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.signature {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- PRINT SPECIFIC STYLES ---------- */
+@media print {
+  @page {
+    size: A4;
+    margin: 0; 
+  }
+
+  .previewContainer {
+    width: 210mm;
+    min-height: 297mm; /* Ensure it's at least one page tall */
+    max-width: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  .content {
+    padding: 15mm 20mm 60mm 20mm; /* Large bottom pad protects from bottomWave */
+  }
+
+  .watermark {
+    opacity: 0.5; /* Scale for print */
+  }
+}

@@ -1,0 +1,101 @@
+.container {
+  min-height: 100vh;
+  background-color: #f7f9fc; /* Soft premium background */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #111;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.leftPanel {
+  width: 500px;
+  min-width: 400px;
+  background-color: #f0f2f5;
+  padding: 40px;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #e1e4e8;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+}
+
+.rightPanel {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  height: 100vh;
+  background: radial-gradient(circle at center, #ffffff 0%, #f4f6f8 100%);
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.panelHeader h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #111, #444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.printBtn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.printBtn:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    flex-direction: column;
+  }
+  .leftPanel {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  .rightPanel {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* Print styling -> when user clicks Print, hide left panel and full width right */
+@media print {
+  .leftPanel {
+    display: none;
+  }
+  .rightPanel {
+    padding: 0;
+    margin: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: none;
+    height: auto;
+    overflow: visible;
+  }
+  .container {
+    background-color: white;
+  }
+}

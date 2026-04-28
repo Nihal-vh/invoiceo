@@ -12,157 +12,225 @@ export default function InvoicePreview({ data }) {
   const taxAmount = taxableAmount * (taxRate / 100);
   const total = taxableAmount + taxAmount;
   
-  const currency = data.currency || '$';
-  const primaryColor = data.primaryColor || '#fdbcb4';
+  const currency = data.currency || '₹';
+  const primaryColor = data.primaryColor || '#000000';
+  const wmOpacity = (data.watermarkOpacity ?? 8) / 100;
+
+  const formatMoney = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const needsSecondPage = data.items.length > 4;
+
+  /* ── Shared summary + footer block ── */
+  const SummaryAndFooter = () => (
+    <>
+      {/* Totals */}
+      <div className={styles.totalsRow}>
+        <div /> {/* Empty left cell */}
+        <div className={styles.totalsBlock}>
+          <div className={styles.totalLine}>
+            <span>Subtotal</span>
+            <span className={styles.mono}>{currency}{formatMoney(subtotal)}</span>
+          </div>
+          {discount > 0 && (
+            <div className={`${styles.totalLine} ${styles.discountLine}`}>
+              <span>Discount</span>
+              <span className={styles.mono}>−{currency}{formatMoney(discount)}</span>
+            </div>
+          )}
+          {taxRate > 0 && (
+            <div className={styles.totalLine}>
+              <span>Tax ({taxRate}%)</span>
+              <span className={styles.mono}>+{currency}{formatMoney(taxAmount)}</span>
+            </div>
+          )}
+          <div className={styles.grandTotal}>
+            <span>Total Due</span>
+            <span className={styles.grandTotalValue}>{currency}{formatMoney(total)}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer — terms + signature */}
+      <div className={styles.footerRow}>
+        {data.terms && (
+          <div className={styles.termsCol}>
+            <div className={styles.footerLabel}>Terms & Conditions</div>
+            <p className={styles.termsText}>{data.terms}</p>
+          </div>
+        )}
+        <div className={styles.signCol}>
+          {data.footerNote && <p className={styles.footerNote}>{data.footerNote}</p>}
+          <div className={styles.sigBlock}>
+            <div className={styles.sigLine} />
+            <div className={styles.sigName}>{data.senderName || 'Authorized Signature'}</div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   return (
-    <div 
-      className={styles.previewContainer} 
-      id="invoice-preview"
-      style={{ '--primary-color': primaryColor }}
-    >
-      {/* Background Watermark Pattern (Optional) */}
-      {data.enablePattern && (
-        <div className={styles.watermark}>
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3"/>
-            <path d="M 30 50 L 70 50 M 50 30 L 50 70" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
-            <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.2"/>
-          </svg>
+    <div id="invoice-preview" style={{ '--accent': primaryColor }}>
+
+      {/* ═══════════════════ PAGE 1 ═══════════════════ */}
+      <div className={styles.page}>
+        {/* Watermarks */}
+        {data.watermarkImage && (
+          <div className={styles.imageWatermark} style={{ opacity: wmOpacity }}>
+            <img src={data.watermarkImage} alt="Watermark" />
+          </div>
+        )}
+        {data.enablePattern && !data.watermarkImage && (
+          <div className={styles.patternWatermark} style={{ opacity: wmOpacity * 3 }}>
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3"/>
+              <path d="M 30 50 L 70 50 M 50 30 L 50 70" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
+              <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.2"/>
+            </svg>
+          </div>
+        )}
+
+        {/* Top Band */}
+        <div className={styles.topBand} />
+
+        {/* Body */}
+        <div className={styles.body}>
+
+          {/* Row 1: Logo + INVOICE heading */}
+          <div className={styles.row1}>
+            <div className={styles.logoCell}>
+              {data.logo ? (
+                <img src={data.logo} alt="Logo" className={styles.logoImg} />
+              ) : (
+                <div className={styles.logoPlaceholder}>LOGO</div>
+              )}
+            </div>
+            <div className={styles.titleCell}>
+              <h1 className={styles.invoiceTitle}>INVOICE</h1>
+              {data.invoiceNumber && (
+                <div className={styles.invoiceNo}>{data.invoiceNumber}</div>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2: Address cards + date strip */}
+          <div className={styles.addressRow}>
+            <div className={styles.addressCard}>
+              <div className={styles.addressAccent} />
+              <div className={styles.addressContent}>
+                <div className={styles.addressLabel}>Billed To</div>
+                <div className={styles.addressName}>{data.clientName || 'Client Name'}</div>
+                {data.clientAddress && <div className={styles.addressDetail}>{data.clientAddress}</div>}
+                {data.clientEmail && <div className={styles.addressEmail}>{data.clientEmail}</div>}
+              </div>
+            </div>
+            <div className={styles.addressCard}>
+              <div className={styles.addressAccent} />
+              <div className={styles.addressContent}>
+                <div className={styles.addressLabel}>Pay To</div>
+                <div className={styles.addressName}>{data.senderName || 'Sender Name'}</div>
+                {data.senderAddress && <div className={styles.addressDetail}>{data.senderAddress}</div>}
+                {data.senderEmail && <div className={styles.addressEmail}>{data.senderEmail}</div>}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.dateStrip}>
+            <div className={styles.dateItem}>
+              <span className={styles.dateKey}>Invoice Date</span>
+              <span className={styles.dateVal}>{data.date || '—'}</span>
+            </div>
+            <div className={styles.dateDivider} />
+            <div className={styles.dateItem}>
+              <span className={styles.dateKey}>Due Date</span>
+              <span className={styles.dateVal}>{data.dueDate || '—'}</span>
+            </div>
+            <div className={styles.dateDivider} />
+            <div className={styles.dateItem}>
+              <span className={styles.dateKey}>Amount Due</span>
+              <span className={styles.dateValHighlight}>{currency}{formatMoney(total)}</span>
+            </div>
+          </div>
+
+          {/* Row 3: Subject */}
+          {(data.subject || data.subheading) && (
+            <div className={styles.row3}>
+              {data.subject && (
+                <div className={styles.subjectLine}>
+                  <span className={styles.subjectKey}>Subject</span>
+                  <span className={styles.subjectVal}>{data.subject}</span>
+                </div>
+              )}
+              {data.subheading && (
+                <div className={styles.subheadingLine}>{data.subheading}</div>
+              )}
+            </div>
+          )}
+
+          {/* Row 4: Items table */}
+          <table className={styles.itemsTable}>
+            <thead>
+              <tr>
+                <th className={styles.thIdx}>#</th>
+                <th className={styles.thDesc}>Description</th>
+                <th className={styles.thPrice}>Unit Price</th>
+                <th className={styles.thQty}>Qty</th>
+                <th className={styles.thAmount}>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.items.map((item, i) => (
+                <tr key={i}>
+                  <td className={styles.tdIdx}>{String(i + 1).padStart(2, '0')}</td>
+                  <td className={styles.tdDesc}>{item.product || '—'}</td>
+                  <td className={styles.tdPrice}>
+                    <span className={styles.currencySymbol}>{currency}</span>
+                    {formatMoney(parseFloat(item.price || 0))}
+                  </td>
+                  <td className={styles.tdQty}>{item.qty}</td>
+                  <td className={styles.tdAmount}>
+                    <span className={styles.currencySymbol}>{currency}</span>
+                    {formatMoney(parseFloat(item.price || 0) * parseInt(item.qty || 0))}
+                  </td>
+                </tr>
+              ))}
+              {data.items.length === 0 && (
+                <tr>
+                  <td colSpan="5" className={styles.emptyRow}>No items added yet</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
+          {/* If ≤4 items, summary + footer stay on page 1 */}
+          {!needsSecondPage && <SummaryAndFooter />}
+
+        </div>
+      </div>
+
+      {/* ═══════════════════ PAGE 2 (only when >4 items) ═══════════════════ */}
+      {needsSecondPage && (
+        <div className={`${styles.page} ${styles.page2}`}>
+          {/* Page 2 accent band */}
+          <div className={styles.topBand} />
+
+          <div className={styles.body}>
+            {/* Continuation header */}
+            <div className={styles.page2Header}>
+              <div className={styles.page2Title}>
+                INVOICE
+                {data.invoiceNumber && (
+                  <span className={styles.page2No}> — {data.invoiceNumber}</span>
+                )}
+              </div>
+              <div className={styles.page2Cont}>Continued</div>
+            </div>
+
+            <SummaryAndFooter />
+          </div>
         </div>
       )}
 
-      {/* Background Waves - Premium Styling */}
-      <div className={styles.topWave}>
-        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-           <path fill="#2b2b2b" fillOpacity="1" d="M0,0L1440,0L1440,64C1200,200 900,200 500,40C300,-40 100,50 0,160Z"></path>
-           <path fill={primaryColor} fillOpacity="0.85" d="M0,0L1440,0L1440,32C1100,100 800,200 400,0C200,-100 50,50 0,100Z"></path>
-        </svg>
-      </div>
-      
-      <div className={styles.bottomWave}>
-        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill={primaryColor} fillOpacity="1" d="M0,320L1440,320L1440,160C1200,280 900,320 500,160C300,50 100,50 0,160Z"></path>
-          <path fill="#2b2b2b" fillOpacity="1" d="M0,320L1440,320L1440,240C1100,350 800,350 400,240C200,150 50,250 0,300Z"></path>
-        </svg>
-      </div>
-
-      {/* Invoice Content */}
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <div className={styles.logoArea}>
-            {data.logo ? (
-              <img src={data.logo} alt="Logo" className={styles.logoImage} />
-            ) : (
-              <div className={styles.placeholderLogo}>LOGO</div>
-            )}
-            {data.invoiceNumber && <div className={styles.invoiceNumber}>{data.invoiceNumber}</div>}
-          </div>
-          <div className={styles.metaTopRight}>
-            <div className={styles.dateArea}>
-              <strong>Date:</strong> {data.date || '—'}
-            </div>
-            <div className={styles.dueDateArea}>
-              <strong>Due Date:</strong> {data.dueDate || '—'}
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.metaData}>
-          <div className={styles.addressBlockRow}>
-            <div className={styles.toBlock}>
-              <strong>Billed To:</strong><br />
-              <span className={styles.highlightText}>{data.clientName || 'Client Name'}</span>
-              {data.clientAddress && <><br />{data.clientAddress}</>}
-              {data.clientEmail && <><br />{data.clientEmail}</>}
-            </div>
-            
-            <div className={styles.fromBlock}>
-              <strong>From:</strong><br />
-              <span className={styles.highlightText}>{data.senderName || 'Sender Name'}</span>
-              {data.senderAddress && <><br />{data.senderAddress}</>}
-              {data.senderEmail && <><br />{data.senderEmail}</>}
-            </div>
-          </div>
-          
-          <div className={styles.subjectBlock}>
-            <strong>Subject: {data.subject || 'Invoice'}</strong>
-          </div>
-          
-          <div className={styles.subheadingBlock}>
-            {data.subheading}
-          </div>
-        </div>
-
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.colProduct}>PRODUCT / SERVICE</th>
-              <th className={styles.colPrice}>PRICE</th>
-              <th className={styles.colQty}>QTY</th>
-              <th className={styles.colTotal}>TOTAL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.items.map((item, index) => (
-              <tr key={index} className={index % 2 !== 0 ? styles.rowAlt : ''}>
-                <td className={styles.colProduct}>{item.product || '—'}</td>
-                <td className={styles.colPrice}>{currency}{item.price}</td>
-                <td className={styles.colQty}>{item.qty}</td>
-                <td className={styles.colTotal}>
-                  {currency}{(parseFloat(item.price || 0) * parseInt(item.qty || 0)).toFixed(2)}
-                </td>
-              </tr>
-            ))}
-            {data.items.length === 0 && (
-              <tr>
-                 <td colSpan="4" className={styles.emptyTable}>No items added</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-
-        <div className={styles.summaryContainer}>
-          <div className={styles.summaryBox}>
-            <div className={styles.summaryRow}>
-              <span className={styles.summaryLabel}>Subtotal</span>
-              <span className={styles.summaryValue}>{currency}{subtotal.toFixed(2)}</span>
-            </div>
-            {discount > 0 && (
-              <div className={`${styles.summaryRow} ${styles.summaryDiscount}`}>
-                <span className={styles.summaryLabel}>Discount</span>
-                <span className={styles.summaryValue}>-{currency}{discount.toFixed(2)}</span>
-              </div>
-            )}
-            {taxRate > 0 && (
-              <div className={styles.summaryRow}>
-                <span className={styles.summaryLabel}>Tax ({taxRate}%)</span>
-                <span className={styles.summaryValue}>+{currency}{taxAmount.toFixed(2)}</span>
-              </div>
-            )}
-            <div className={`${styles.summaryRow} ${styles.summaryTotal}`}>
-              <span className={styles.summaryLabel}>Total</span>
-              <span className={styles.summaryValue}>{currency}{total.toFixed(2)}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.bottomSection}>
-          {data.terms && (
-            <div className={styles.termsBox}>
-              <strong>Terms & Conditions</strong>
-              <p>{data.terms}</p>
-            </div>
-          )}
-          <div className={styles.footer}>
-            <p className={styles.footerNote}>{data.footerNote}</p>
-            <div className={styles.signature}>
-              Sincerely,<br />
-              <strong>{data.senderName || 'Sender Name'}</strong>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

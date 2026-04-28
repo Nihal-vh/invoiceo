@@ -33,12 +33,12 @@ export default function InvoiceForm({ data, onChange }) {
     onChange({ ...data, invoiceNumber: `${prefix}${num}` });
   };
 
-  const handleLogoUpload = (e) => {
+  const handleFileUpload = (e, field) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        onChange({ ...data, logo: reader.result });
+        onChange({ ...data, [field]: reader.result });
       };
       reader.readAsDataURL(file);
     }
@@ -53,7 +53,7 @@ export default function InvoiceForm({ data, onChange }) {
         <div className={styles.fieldRow}>
           <div className={styles.field}>
             <label className={styles.label}>Upload Logo</label>
-            <input type="file" accept="image/*" className={styles.fileInput} onChange={handleLogoUpload} />
+            <input type="file" accept="image/*" className={styles.fileInput} onChange={(e) => handleFileUpload(e, 'logo')} />
           </div>
           <div className={styles.field}>
             <label className={styles.label}>Brand Color</label>
@@ -78,6 +78,32 @@ export default function InvoiceForm({ data, onChange }) {
           </div>
         </div>
         <div className={styles.fieldRow}>
+           <div className={styles.field}>
+            <label className={styles.label}>Watermark Image</label>
+            <input type="file" accept="image/*" className={styles.fileInput} onChange={(e) => handleFileUpload(e, 'watermarkImage')} />
+          </div>
+        </div>
+        <div className={styles.fieldRow}>
+          <div className={styles.field}>
+            <label className={styles.label}>Watermark Opacity — {data.watermarkOpacity ?? 8}%</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '11px', color: '#a3a3a3' }}>0%</span>
+              <input
+                type="range"
+                name="watermarkOpacity"
+                min="0"
+                max="40"
+                step="1"
+                value={data.watermarkOpacity ?? 8}
+                onChange={handleChange}
+                className={styles.rangeInput}
+                style={{ flex: 1 }}
+              />
+              <span style={{ fontSize: '11px', color: '#a3a3a3' }}>40%</span>
+            </div>
+          </div>
+        </div>
+        <div className={styles.fieldRow}>
           <div className={styles.field}>
             <label className={styles.label}>
               <input
@@ -87,7 +113,19 @@ export default function InvoiceForm({ data, onChange }) {
                 onChange={handleChange}
                 style={{ marginRight: '8px' }}
               />
-              Enable Center Watermark Pattern
+              Enable Center Pattern
+            </label>
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label}>
+              <input
+                type="checkbox"
+                name="enableBranding"
+                checked={data.enableBranding}
+                onChange={handleChange}
+                style={{ marginRight: '8px' }}
+              />
+              Enable Platform Watermark
             </label>
           </div>
         </div>

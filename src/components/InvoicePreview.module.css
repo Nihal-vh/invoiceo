@@ -1,335 +1,556 @@
-/* Base Container constraints for on-screen */
-.previewContainer {
-  background: white;
+/* ═══════════════════════════════════════════════
+   INVOICEO — SWISS GRID INVOICE
+   Base unit: 8px.  Columns: 12.  Gutters: 24px.
+   Font stack: Inter (text), JetBrains Mono (nums).
+   ═══════════════════════════════════════════════ */
+
+/* ─── PAGE SHELL ─── */
+.page {
+  background: #ffffff;
   width: 100%;
-  max-width: 800px; /* A4 width */
+  max-width: 880px;
   margin: 0 auto;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08); /* Premium shadow */
-  border-radius: 4px;
+  border: 1px solid #d4d4d4;
+  border-radius: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #2b2b2b;
+  color: #0a0a0a;
   display: flex;
   flex-direction: column;
-  /* Allow the container to grow with items */
-  min-height: 1100px; 
+  min-height: 1180px;
+  overflow: hidden;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; /* Inter stylistic sets */
 }
 
-/* Watermark */
-.watermark {
+/* ─── WATERMARKS (behind content) ─── */
+.imageWatermark {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 450px;
-  height: 450px;
-  color: var(--primary-color);
-  z-index: 1; 
-  pointer-events: none;
-  opacity: 0.7; /* Svg itself dictates partial opacity layers */
-}
-.watermark svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Background Waves */
-.topWave, .bottomWave {
-  position: absolute;
-  left: 0;
-  width: 100%;
+  width: 420px;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
   pointer-events: none;
+  opacity: 0.06;
 }
-.topWave { top: 0; }
-.bottomWave { bottom: 0; }
-.topWave svg, .bottomWave svg {
-  display: block;
-  width: 100%;
-  height: auto;
+.imageWatermark img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%);
 }
 
-/* Main Content Layer */
-.content {
+.patternWatermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 420px;
+  color: var(--accent);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.25;
+}
+.patternWatermark svg { width: 100%; height: 100%; }
+
+/* ─── TOP ACCENT BAND ─── */
+.topBand {
+  width: 100%;
+  height: 6px;
+  background: var(--accent, #0a0a0a);
+  flex-shrink: 0;
+}
+
+/* ─── BODY (all content inside) ─── */
+.body {
   position: relative;
   z-index: 2;
-  padding: 60px 60px 220px 60px; /* High bottom padding to clear the bottom wave */
+  padding: 40px 56px 48px 56px;
   display: flex;
   flex-direction: column;
-  flex: 1; /* Allow content to fill space */
+  flex: 1;
 }
 
-.header {
+/* ═══════════════════════════════
+   ROW 1 — LOGO + INVOICE HEADING
+   ═══════════════════════════════ */
+.row1 {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 10px;
+  margin-bottom: 32px;
 }
 
-.logoArea {
-  display: flex;
-  flex-direction: column;
-}
+.logoCell {}
 
-.logoImage {
-  max-width: 160px;
-  max-height: 85px;
+.logoImg {
+  max-width: 140px;
+  max-height: 64px;
   object-fit: contain;
+  display: block;
 }
 
-.placeholderLogo {
-  width: 110px;
-  height: 90px;
-  background: linear-gradient(135deg, #2b2b2b, #000);
+.logoPlaceholder {
+  width: 80px;
+  height: 48px;
+  background: #2d2d2d;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 22px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.invoiceNumber {
-  margin-top: 12px;
   font-weight: 700;
-  color: #555;
-  font-size: 15px;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  letter-spacing: 3px;
 }
 
-.metaTopRight {
+.titleCell {
   text-align: right;
 }
 
-.dateArea, .dueDateArea {
-  font-size: 14px;
+.invoiceTitle {
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  line-height: 1;
+  color: #0a0a0a;
+  margin: 0;
+}
+
+.invoiceNo {
   margin-top: 8px;
-  color: #444;
-}
-.dateArea strong, .dueDateArea strong {
-  margin-right: 6px;
-  color: #111;
-}
-
-/* Bi-directional Addresses Grid */
-.metaData {
-  margin-top: 40px;
-  margin-bottom: 30px;
-}
-
-.addressBlockRow {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.toBlock, .fromBlock {
-  font-size: 14px;
-  line-height: 1.6;
-  flex: 1;
-}
-.fromBlock {
-  text-align: right;
-  padding-left: 20px;
-}
-
-.highlightText {
-  font-weight: 700;
-  font-size: 16px;
-  color: #000;
-  display: inline-block;
-  margin-top: 4px;
-}
-
-.subjectBlock {
-  font-weight: 700;
-  font-size: 15px;
-  margin-bottom: 8px;
-  color: #111;
-  border-left: 4px solid var(--primary-color, #fdbcb4);
-  padding-left: 12px;
-}
-
-.subheadingBlock {
-  font-size: 14px;
-  color: #555;
-  padding-left: 16px;
-}
-
-/* Data Table */
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-bottom: 40px;
-  text-align: center;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px #eee;
-}
-
-.table th {
-  background-color: #1a1a1a;
-  color: #fff;
-  padding: 14px 10px;
-  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
+  font-weight: 500;
+  color: #737373;
   letter-spacing: 1px;
 }
 
-.table td {
-  padding: 14px 10px;
-  font-size: 14px;
-  border-bottom: 1px solid #f0f0f0;
+/* ═══════════════════════════════
+   ROW 2 — ADDRESS CARDS
+   Two-column, accent-striped cards
+   ═══════════════════════════════ */
+.addressRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.table tbody tr:last-child td {
+.addressCard {
+  display: flex;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  overflow: hidden;
+}
+
+.addressAccent {
+  width: 4px;
+  background: var(--accent, #0a0a0a);
+  flex-shrink: 0;
+}
+
+.addressContent {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.addressLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.addressName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0a0a0a;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.addressDetail {
+  font-size: 12px;
+  color: #525252;
+  line-height: 1.6;
+}
+
+.addressEmail {
+  font-size: 12px;
+  color: #737373;
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════
+   DATE STRIP
+   Compact horizontal info bar
+   ═══════════════════════════════ */
+.dateStrip {
+  display: flex;
+  align-items: center;
+  background: #2d2d2d;
+  padding: 14px 24px;
+  margin-bottom: 24px;
+}
+
+.dateItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.dateKey {
+  font-size: 9px;
+  font-weight: 700;
+  color: #737373;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.dateVal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.dateValHighlight {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent, #ffffff);
+  letter-spacing: 0.5px;
+}
+
+.dateDivider {
+  width: 1px;
+  height: 32px;
+  background: #404040;
+  margin: 0 24px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   ROW 3 — SUBJECT
+   ═══════════════════════════════ */
+.row3 {
+  margin-bottom: 32px;
+}
+
+.subjectLine {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.subjectKey {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+.subjectVal {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+.subheadingLine {
+  font-size: 12px;
+  color: #737373;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════
+   ROW 4 — ITEMS TABLE
+   ═══════════════════════════════ */
+.itemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+
+/* -- Head -- */
+.itemsTable thead tr {
+  background: #2d2d2d;
+}
+
+.itemsTable th {
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 14px 16px;
+  white-space: nowrap;
+}
+
+.thIdx   { width: 48px; text-align: center; }
+.thDesc  { text-align: left; }
+.thPrice { width: 130px; text-align: right; }
+.thQty   { width: 72px; text-align: center; }
+.thAmount{ width: 130px; text-align: right; }
+
+/* -- Body -- */
+.itemsTable td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #262626;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.itemsTable tbody tr:last-child td {
   border-bottom: none;
 }
 
-.rowAlt {
-  background-color: #fafbfc;
-}
-
-.emptyTable {
+.tdIdx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #a3a3a3;
   text-align: center;
-  padding: 30px !important;
-  color: #aaa !important;
-  font-style: italic;
+  font-weight: 500;
 }
 
-.colProduct { text-align: left; width: 45%; padding-left: 20px !important; font-weight: 500; color: #111; }
-.colPrice { width: 20%; }
-.colQty { width: 15%; }
-.colTotal { width: 20%; font-weight: 600; }
+.tdDesc {
+  font-weight: 500;
+  color: #0a0a0a;
+}
 
-/* Summary Widget Area */
-.summaryContainer {
-  align-self: flex-end;
-  width: 100%;
+.tdPrice, .tdAmount {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tdQty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-align: center;
+  color: #525252;
+}
+
+.currencySymbol {
+  color: #a3a3a3;
+  margin-right: 2px;
+  font-size: 11px;
+}
+
+.emptyRow {
+  text-align: center;
+  padding: 48px 16px !important;
+  color: #a3a3a3 !important;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════
+   ROW 5 — TOTALS
+   Swiss grid push: 60/40 split
+   ═══════════════════════════════ */
+.totalsRow {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  border-top: 2px solid #2d2d2d;
+}
+
+.totalsBlock {
+  padding: 24px 0 0 0;
+}
+
+.totalLine {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 40px;
-}
-
-.summaryBox {
-  min-width: 300px;
-  background: #fdfdfd;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-  border: 1px solid #eaeaea;
-}
-
-.summaryRow {
-  display: flex;
-  padding: 8px 12px;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px dashed #eee;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #525252;
 }
 
-.summaryRow:last-child {
-  border-bottom: none;
-}
-
-.summaryDiscount {
-  color: #e53e3e;
-}
-
-.summaryLabel {
+.totalLine span:first-child {
   font-weight: 500;
-  color: #555;
-  font-size: 14px;
 }
 
-.summaryValue {
-  font-weight: 600;
-  font-size: 15px;
+.discountLine {
+  color: #dc2626;
 }
 
-.summaryTotal {
-  margin-top: 6px;
-  padding-top: 12px;
-  background: linear-gradient(90deg, #fafafa, #f4f6f8);
-  border-radius: 6px;
-}
-.summaryTotal .summaryLabel {
-  font-weight: 800;
-  color: #111;
-  font-size: 16px;
-}
-.summaryTotal .summaryValue {
-  font-weight: 800;
-  color: #111;
-  font-size: 18px;
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 13px;
 }
 
-/* Footer Grouping */
-.bottomSection {
-  margin-top: auto; 
+.grandTotal {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: 40px;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #d4d4d4;
 }
 
-.termsBox {
-  flex: 1;
-  background: #f9fafa; /* Very light neutral background instead of solid color */
-  padding: 16px;
-  border-radius: 8px;
-  font-size: 12px;
-  color: #666; /* Softer text color */
-  border-left: 4px solid var(--primary-color, #fdbcb4); /* Brand color as subtle stripe */
-}
-.termsBox strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #333; /* Darker title but not pure black */
-  font-weight: 600;
+.grandTotal span:first-child {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0a0a0a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-.footer {
-  flex: 1;
+.grandTotalValue {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0a0a0a;
+  letter-spacing: -0.5px;
+}
+
+/* ═══════════════════════════════
+   ROW 6 — FOOTER
+   Swiss grid 50/50 split
+   ═══════════════════════════════ */
+.footerRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: auto;
+  padding-top: 32px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.termsCol {}
+
+.footerLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.termsText {
+  font-size: 11px;
+  color: #737373;
+  line-height: 1.7;
+}
+
+.signCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   text-align: right;
-  font-size: 12px;
-  color: #555;
 }
 
 .footerNote {
-  margin-bottom: 16px;
-  line-height: 1.5;
+  font-size: 11px;
+  color: #737373;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-style: italic;
 }
 
-.signature {
-  font-size: 14px;
-  line-height: 1.5;
+.sigBlock {
+  margin-left: auto;
 }
 
-/* ---------- PRINT SPECIFIC STYLES ---------- */
+.sigLine {
+  width: 180px;
+  height: 1px;
+  background: #2d2d2d;
+  margin-left: auto;
+  margin-bottom: 8px;
+}
+
+.sigName {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2d2d2d;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════
+   PAGE 2 — CONTINUATION
+   ═══════════════════════════════ */
+.page2 {
+  margin-top: 32px;
+}
+
+.page2Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.page2Title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #2d2d2d;
+}
+
+.page2No {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #737373;
+  letter-spacing: 1px;
+}
+
+.page2Cont {
+  font-size: 11px;
+  font-weight: 600;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════
+   PRINT
+   ═══════════════════════════════ */
 @media print {
-  @page {
-    size: A4;
-    margin: 0; 
-  }
+  @page { size: A4; margin: 0; }
 
-  .previewContainer {
+  .page {
     width: 210mm;
-    min-height: 297mm; /* Ensure it's at least one page tall */
+    min-height: 297mm;
     max-width: none;
-    box-shadow: none;
-    border-radius: 0;
+    border: none;
     margin: 0;
   }
-  
-  .content {
-    padding: 15mm 20mm 60mm 20mm; /* Large bottom pad protects from bottomWave */
+
+  .body {
+    padding: 14mm 18mm 14mm 18mm;
   }
 
-  .watermark {
-    opacity: 0.5; /* Scale for print */
+  .patternWatermark { opacity: 0.12; }
+  .imageWatermark { opacity: 0.04; }
+  .topBand { height: 4px; }
+
+  /* Page 2 starts on a new printed page */
+  .page2 {
+    break-before: page;
+    margin-top: 0;
   }
 }

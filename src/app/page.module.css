@@ -1,24 +1,71 @@
 .container {
   min-height: 100vh;
-  background-color: #f7f9fc; /* Soft premium background */
+  background-color: #f9fafb;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #111;
 }
 
 .layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .leftPanel {
-  width: 500px;
-  min-width: 400px;
-  background-color: #f0f2f5;
+  background-color: #ffffff;
   padding: 40px;
   height: 100vh;
   overflow-y: auto;
-  border-right: 1px solid #e1e4e8;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* Custom Scrollbar for left panel */
+.leftPanel::-webkit-scrollbar {
+  width: 6px;
+}
+.leftPanel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.leftPanel::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+.leftPanel::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ─── RESIZE HANDLE ─── */
+.resizeHandle {
+  width: 8px;
+  cursor: col-resize;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.resizeHandle:hover {
+  background: #d1d5db;
+}
+
+.resizeHandle:active {
+  background: #9ca3af;
+}
+
+.resizeGrip {
+  width: 2px;
+  height: 32px;
+  background: #9ca3af;
+  border-radius: 1px;
+}
+
+.resizeHandle:hover .resizeGrip {
+  background: #6b7280;
 }
 
 .rightPanel {
@@ -29,51 +76,83 @@
   align-items: flex-start;
   overflow-y: auto;
   height: 100vh;
-  background: radial-gradient(circle at center, #ffffff 0%, #f4f6f8 100%);
+  background-color: #f3f4f6;
+}
+
+.rightPanel::-webkit-scrollbar {
+  width: 8px;
+}
+.rightPanel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rightPanel::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
 }
 
 .panelHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .panelHeader h1 {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #111, #444);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
 }
 
 .printBtn {
-  background: #111;
-  color: #fff;
-  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
   padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 0;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: transform 0.2s, background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .printBtn:hover {
-  background: #333;
-  transform: translateY(-1px);
+  background-color: #333333;
+  border-color: #333333;
+}
+
+.printBtn:active {
+  transform: translateY(1px);
+}
+
+.developerCredit {
+  margin-top: auto;
+  padding-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.developerCredit span {
+  color: #111;
+  font-weight: 600;
 }
 
 @media (max-width: 1024px) {
   .layout {
     flex-direction: column;
+    height: auto;
   }
   .leftPanel {
-    width: 100%;
+    width: 100% !important;
+    min-width: 100% !important;
     height: auto;
     border-right: none;
-    border-bottom: 1px solid #e1e4e8;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .resizeHandle {
+    display: none;
   }
   .rightPanel {
     height: auto;
@@ -81,10 +160,13 @@
   }
 }
 
-/* Print styling -> when user clicks Print, hide left panel and full width right */
+/* Print styling */
 @media print {
   .leftPanel {
-    display: none;
+    display: none !important;
+  }
+  .resizeHandle {
+    display: none !important;
   }
   .rightPanel {
     padding: 0;
@@ -96,6 +178,6 @@
     overflow: visible;
   }
   .container {
-    background-color: white;
+    background: white;
   }
 }

@@ -36,7 +36,7 @@ Getting the environment running locally takes less than a minute.
 
 **1. Clone the repository**
 `bash
-git clone https://github.com/yourusername/invoiceo.git
+https://github.com/Nihal-vh/invoiceo.git
 cd invoiceo
 `
 

@@ -72,3 +72,4 @@ Contributions are welcome. Keep the code clean, ensure your pull requests align 
 ## § License
 
 MIT License. See the `LICENSE` file for details.
+

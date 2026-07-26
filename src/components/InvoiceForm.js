@@ -74,6 +74,14 @@ export default function InvoiceForm({ data, onChange }) {
               <option value="£">£ (GBP)</option>
               <option value="₹">₹ (INR)</option>
               <option value="¥">¥ (JPY)</option>
+              <option value="AED ">AED (UAE Dirham)</option>
+              <option value="د.إ ">د.إ (AED - Arabic)</option>
+              <option value="SAR ">SAR (Saudi Riyal)</option>
+              <option value="ر.س ">ر.س (SAR - Arabic)</option>
+              <option value="KWD ">KWD (Kuwaiti Dinar)</option>
+              <option value="QAR ">QAR (Qatari Riyal)</option>
+              <option value="OMR ">OMR (Omani Rial)</option>
+              <option value="BHD ">BHD (Bahraini Dinar)</option>
             </select>
           </div>
         </div>

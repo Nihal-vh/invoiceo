@@ -348,9 +348,10 @@
 }
 
 .currencySymbol {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #a3a3a3;
   margin-right: 2px;
-  font-size: 11px;
+  font-size: 0.85em;
 }
 
 .emptyRow {

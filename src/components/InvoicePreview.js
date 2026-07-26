@@ -29,23 +29,35 @@ export default function InvoicePreview({ data }) {
         <div className={styles.totalsBlock}>
           <div className={styles.totalLine}>
             <span>Subtotal</span>
-            <span className={styles.mono}>{currency}{formatMoney(subtotal)}</span>
+            <span className={styles.mono}>
+              <span className={styles.currencySymbol}>{currency}</span>
+              {formatMoney(subtotal)}
+            </span>
           </div>
           {discount > 0 && (
             <div className={`${styles.totalLine} ${styles.discountLine}`}>
               <span>Discount</span>
-              <span className={styles.mono}>−{currency}{formatMoney(discount)}</span>
+              <span className={styles.mono}>
+                −<span className={styles.currencySymbol}>{currency}</span>
+                {formatMoney(discount)}
+              </span>
             </div>
           )}
           {taxRate > 0 && (
             <div className={styles.totalLine}>
               <span>Tax ({taxRate}%)</span>
-              <span className={styles.mono}>+{currency}{formatMoney(taxAmount)}</span>
+              <span className={styles.mono}>
+                +<span className={styles.currencySymbol}>{currency}</span>
+                {formatMoney(taxAmount)}
+              </span>
             </div>
           )}
           <div className={styles.grandTotal}>
             <span>Total Due</span>
-            <span className={styles.grandTotalValue}>{currency}{formatMoney(total)}</span>
+            <span className={styles.grandTotalValue}>
+              <span className={styles.currencySymbol}>{currency}</span>
+              {formatMoney(total)}
+            </span>
           </div>
         </div>
       </div>
@@ -148,7 +160,10 @@ export default function InvoicePreview({ data }) {
             <div className={styles.dateDivider} />
             <div className={styles.dateItem}>
               <span className={styles.dateKey}>Amount Due</span>
-              <span className={styles.dateValHighlight}>{currency}{formatMoney(total)}</span>
+              <span className={styles.dateValHighlight}>
+                <span className={styles.currencySymbol}>{currency}</span>
+                {formatMoney(total)}
+              </span>
             </div>
           </div>
 
